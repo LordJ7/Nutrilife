@@ -1,0 +1,391 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NutriLife | Tu bienestar</title>
+<style>
+:root {
+  --green: #245b45;
+  --green2: #397c5b;
+  --mint: #e7f2e9;
+  --cream: #f7f7f1;
+  --text: #25372e;
+  --muted: #829087;
+  --white: #ffffff;
+  --border: #e9eee8;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: var(--cream);
+  color: var(--text);
+}
+button, input, select { font: inherit; }
+button { cursor: pointer; transition: .2s; }
+button:hover { transform: translateY(-1px); }
+.layout { display: flex; min-height: 100vh; }
+.sidebar {
+  width: 235px;
+  background: var(--green);
+  color: white;
+  padding: 28px 18px;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+.brand { font-size: 25px; font-weight: 750; letter-spacing: -.8px; padding: 0 10px; }
+.brand span { color: #a9d9b5; }
+.brand-sub { color: #d0e2d4; font-size: 12px; padding: 5px 10px 35px; }
+.nav-title { color: #aac9b5; font-size: 10px; font-weight: 700; letter-spacing: 1.6px; padding: 0 12px 12px; }
+.nav {
+  color: #d8e8dc;
+  padding: 13px 12px;
+  border-radius: 10px;
+  margin-bottom: 6px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.nav.active, .nav:hover { background: #ffffff1c; color: white; }
+.sidebar-bottom {
+  margin-top: auto;
+  background: #ffffff12;
+  border: 1px solid #ffffff18;
+  border-radius: 14px;
+  padding: 15px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: #d5e8d9;
+}
+.main { flex: 1; min-width: 0; }
+.topbar {
+  background: #ffffff;
+  border-bottom: 1px solid var(--border);
+  padding: 18px 34px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.breadcrumb { font-size: 13px; color: var(--muted); }
+.profile { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 650; }
+.avatar {
+  width: 38px; height: 38px; display: grid; place-items: center;
+  background: var(--mint); color: var(--green); border-radius: 50%;
+  font-weight: 800;
+}
+.content { max-width: 1250px; margin: auto; padding: 30px 34px 45px; }
+.welcome { display: flex; justify-content: space-between; align-items: end; gap: 15px; margin-bottom: 25px; }
+h1 { font-size: clamp(25px,3vw,34px); margin: 0 0 9px; letter-spacing: -1px; }
+h2 { font-size: 18px; margin: 0 0 8px; }
+h3 { font-size: 15px; margin: 0; }
+p { line-height: 1.55; }
+.muted { color: var(--muted); font-size: 13px; margin: 0; }
+.date { font-size: 12px; color: var(--green); background: var(--mint); padding: 10px 13px; border-radius: 9px; white-space: nowrap; }
+.hero {
+  background: linear-gradient(115deg,#245b45,#397c5b);
+  color: white;
+  padding: 25px 28px;
+  border-radius: 19px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 23px;
+  overflow: hidden;
+}
+.hero h2 { font-size: 22px; margin-bottom: 8px; }
+.hero p { font-size: 13px; color: #dcece0; max-width: 480px; margin: 0 0 18px; }
+.hero .eyebrow { color: #b9dfc3; font-size: 10px; letter-spacing: 1.8px; font-weight: 800; }
+.hero-mark { font-size: 74px; opacity: .85; padding: 0 18px; }
+.btn {
+  border: 0; background: var(--green); color: white; padding: 11px 15px;
+  border-radius: 9px; font-size: 12px; font-weight: 700;
+}
+.btn-light { background: white; color: var(--green); }
+.btn-soft { background: var(--mint); color: var(--green); }
+.stats { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 16px; margin-bottom: 23px; }
+.stat, .card { background: white; border: 1px solid var(--border); border-radius: 15px; padding: 20px; }
+.stat-top { display: flex; justify-content: space-between; gap: 8px; align-items: center; }
+.stat-icon { width: 38px; height: 38px; display: grid; place-items: center; background: var(--mint); border-radius: 11px; font-size: 19px; }
+.stat-number { font-size: 26px; font-weight: 750; margin: 15px 0 5px; letter-spacing: -.6px; }
+.stat-note { font-size: 11px; color: var(--muted); }
+.section-heading { display: flex; justify-content: space-between; align-items: center; margin: 29px 0 15px; gap: 12px; }
+.section-heading h2 { margin: 0; }
+.grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 17px; }
+.card-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 8px; }
+.pill { background: var(--mint); color: var(--green); border-radius: 20px; padding: 6px 9px; font-size: 10px; font-weight: 700; }
+.water-body { display: flex; align-items: center; gap: 22px; padding: 18px 0 12px; }
+.ring {
+  --progress: 0%;
+  width: 132px; height: 132px; border-radius: 50%; flex-shrink: 0;
+  background: conic-gradient(#4c9a6d var(--progress),#e8efe9 0);
+  display: grid; place-items: center;
+}
+.ring-inner { width: 106px; height: 106px; background: white; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.ring-inner strong { font-size: 28px; }
+.ring-inner span { font-size: 11px; color: var(--muted); }
+.water-info { min-width: 0; }
+.water-info p { font-size: 12px; color: var(--muted); margin: 7px 0 15px; }
+.water-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+.form-label { display: block; font-size: 12px; font-weight: 650; margin: 15px 0 7px; }
+input, select {
+  width: 100%; padding: 12px; background: #fbfcfa;
+  border: 1px solid #dfe7df; border-radius: 9px; outline: none; color: var(--text);
+}
+input:focus, select:focus { border-color: var(--green2); }
+.full { width: 100%; margin-top: 14px; }
+.notice { display: none; padding: 11px; margin-top: 13px; background: var(--mint); color: var(--green); border-radius: 9px; font-size: 12px; line-height: 1.5; }
+.habit-list { display: grid; gap: 10px; margin-top: 17px; }
+.habit-row { display: flex; align-items: center; gap: 12px; background: #fafbf8; border: 1px solid var(--border); padding: 12px; border-radius: 11px; }
+.habit-icon { width: 38px; height: 38px; display: grid; place-items: center; border-radius: 10px; background: var(--mint); font-size: 19px; }
+.habit-detail { flex: 1; min-width: 0; }
+.habit-detail strong { font-size: 12px; display: block; margin-bottom: 4px; }
+.habit-detail span { font-size: 11px; color: var(--muted); }
+.meal-count { font-size: 32px; font-weight: 750; margin: 15px 0 4px; }
+.footer { text-align: center; color: var(--muted); font-size: 11px; padding: 30px 0 0; }
+[hidden] { display: none !important; }
+@media(max-width:850px) {
+  .sidebar { width: 190px; }
+  .content { padding: 25px 20px; }
+  .topbar { padding: 15px 20px; }
+  .water-body { flex-direction: column; align-items: flex-start; }
+}
+@media(max-width:620px) {
+  .layout { display: block; }
+  .sidebar { width: 100%; padding: 17px; }
+  .brand-sub, .nav-title, .sidebar-bottom { display: none; }
+  .sidebar { display: block; }
+  .nav { display: inline-block; padding: 9px; margin: 10px 3px 0 0; font-size: 11px; }
+  .topbar { padding: 13px 16px; }
+  .content { padding: 23px 14px; }
+  .welcome { align-items: flex-start; flex-direction: column; }
+  .hero { padding: 21px; }
+  .hero-mark { display: none; }
+  .stats { gap: 9px; }
+  .stat { padding: 13px; }
+  .stat-number { font-size: 22px; }
+  .stat-icon { width: 30px; height: 30px; font-size: 15px; }
+  .stat-note { font-size: 10px; }
+  .grid { grid-template-columns: 1fr; }
+  .water-body { flex-direction: row; align-items: center; gap: 15px; }
+  .ring { width: 112px; height: 112px; }
+  .ring-inner { width: 90px; height: 90px; }
+  .ring-inner strong { font-size: 24px; }
+  .date { white-space: normal; }
+}
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">🌿 Nutri<span>Life</span></div>
+    <div class="brand-sub">TU BIENESTAR, TU RITMO</div>
+    <div class="nav-title">MENÚ PRINCIPAL</div>
+    <div class="nav active" onclick="showSection('inicio',this)">⌂ &nbsp; Resumen general</div>
+    <div class="nav" onclick="showSection('agua',this)">◉ &nbsp; Hidratación</div>
+    <div class="nav" onclick="showSection('habitos',this)">✳ &nbsp; Mis hábitos</div>
+    <div class="nav" onclick="showSection('recordatorios',this)">◷ &nbsp; Recordatorios</div>
+    <div class="sidebar-bottom">
+      <div style="font-size:22px;margin-bottom:8px">🌱</div>
+      <strong>Un paso a la vez</strong><br>
+      Los pequeños cambios diarios construyen hábitos duraderos.
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <span class="breadcrumb">NutriLife / <strong id="crumb">Resumen general</strong></span>
+      <div class="profile"><div class="avatar">U</div><span>Mi espacio personal</span></div>
+    </header>
+
+    <main class="content">
+      <div id="inicio">
+        <div class="welcome">
+          <div>
+            <h1>Tu bienestar comienza hoy.</h1>
+            <p class="muted">Organiza tu rutina y celebra cada pequeño avance.</p>
+          </div>
+          <div class="date" id="today"></div>
+        </div>
+
+        <section class="hero">
+          <div>
+            <div class="eyebrow">TU RESUMEN DIARIO</div>
+            <h2>Cuida de ti, un hábito a la vez.</h2>
+            <p>Una vida saludable no se construye en un día. Cada elección cuenta y hoy tienes una nueva oportunidad para avanzar.</p>
+            <button class="btn btn-light" onclick="showSection('habitos')">Explorar mis hábitos →</button>
+          </div>
+          <div class="hero-mark">☘</div>
+        </section>
+
+        <div class="stats">
+          <section class="stat">
+            <div class="stat-top"><span class="muted">Agua consumida</span><span class="stat-icon">💧</span></div>
+            <div class="stat-number"><span id="statWater">0</span><span style="font-size:14px;color:#829087"> / 8</span></div>
+            <div class="stat-note">Vasos registrados hoy</div>
+          </section>
+          <section class="stat">
+            <div class="stat-top"><span class="muted">Actividad física</span><span class="stat-icon">🏃</span></div>
+            <div class="stat-number" id="statActivity">0</div>
+            <div class="stat-note">Actividades registradas</div>
+          </section>
+          <section class="stat">
+            <div class="stat-top"><span class="muted">Alimentación</span><span class="stat-icon">🥗</span></div>
+            <div class="stat-number" id="statMeals">0</div>
+            <div class="stat-note">Comidas registradas</div>
+          </section>
+        </div>
+
+        <div class="section-heading"><h2>Tu plan de bienestar</h2><span class="pill">HOY</span></div>
+        <div class="grid">
+          <section class="card" id="waterCard">
+            <div class="card-head"><h3>💧 Hidratación</h3><span class="pill">DIARIO</span></div>
+            <p class="muted">Mantén un seguimiento sencillo de tu consumo de agua.</p>
+            <div class="water-body">
+              <div class="ring" id="ring"><div class="ring-inner"><strong id="waterCount">0/8</strong><span>vasos de agua</span></div></div>
+              <div class="water-info">
+                <strong id="waterTitle">¡Comienza cuando quieras!</strong>
+                <p id="waterHint">Cada vaso cuenta para tu meta diaria.</p>
+                <div class="water-actions">
+                  <button class="btn" onclick="addWater()">＋ Registrar vaso</button>
+                  <button class="btn btn-soft" onclick="removeWater()">Deshacer</button>
+                </div>
+              </div>
+            </div>
+            <div id="waterNotice" class="notice" role="status"></div>
+          </section>
+
+          <section class="card" id="reminderCard">
+            <div class="card-head"><h3>⏰ Recordatorios</h3><span class="pill">PERSONALIZA</span></div>
+            <p class="muted">Elige una hora para organizar tu recordatorio de hidratación.</p>
+            <label class="form-label" for="reminderTime">Hora del recordatorio</label>
+            <input type="time" id="reminderTime" value="10:00">
+            <button class="btn full" onclick="saveReminder()">Guardar recordatorio →</button>
+            <div id="reminderResult" class="notice" role="status"></div>
+          </section>
+
+          <section class="card" id="habits">
+            <div class="card-head"><h3>🏃 Actividad física</h3><span class="pill">MOVIMIENTO</span></div>
+            <p class="muted">Registra una actividad para llevar el control de tu rutina.</p>
+            <label class="form-label" for="activity">Actividad realizada</label>
+            <select id="activity">
+              <option>Caminata</option><option>Estiramientos</option>
+              <option>Bicicleta</option><option>Baile</option><option>Otro ejercicio</option>
+            </select>
+            <button class="btn full" onclick="saveActivity()">Registrar actividad</button>
+            <div id="activityResult" class="notice" role="status"></div>
+          </section>
+
+          <section class="card" id="alimentacion">
+            <div class="card-head"><h3>🥗 Alimentación</h3><span class="pill">ORGANIZACIÓN</span></div>
+            <p class="muted">Lleva un registro de las comidas que has realizado.</p>
+            <label class="form-label" for="meal">Selecciona una comida</label>
+            <select id="meal">
+              <option>Desayuno</option><option>Comida</option>
+              <option>Cena</option><option>Colación</option>
+            </select>
+            <button class="btn full" onclick="saveMeal()">Registrar comida</button>
+            <div id="mealResult" class="notice" role="status"></div>
+          </section>
+        </div>
+      </div>
+      <div class="footer">NutriLife © 2026 · Plataforma de hábitos y bienestar preventivo</div>
+    </main>
+  </div>
+</div>
+
+<script>
+let water = 0;
+let activities = 0;
+let meals = 0;
+
+const $ = id => document.getElementById(id);
+
+function showSection(section, nav) {
+  if (section === "agua") {
+    $("crumb").textContent = "Hidratación";
+    $("waterCard").scrollIntoView({behavior:"smooth",block:"center"});
+  } else if (section === "recordatorios") {
+    $("crumb").textContent = "Recordatorios";
+    $("reminderCard").scrollIntoView({behavior:"smooth",block:"center"});
+  } else if (section === "habitos") {
+    $("crumb").textContent = "Mis hábitos";
+    $("habits").scrollIntoView({behavior:"smooth",block:"center"});
+  } else {
+    $("crumb").textContent = "Resumen general";
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+  document.querySelectorAll(".nav").forEach(n=>n.classList.remove("active"));
+  if (nav) nav.classList.add("active");
+  else {
+    const match = {inicio:0,agua:1,habitos:2,recordatorios:3}[section];
+    document.querySelectorAll(".nav")[match].classList.add("active");
+  }
+}
+
+function updateWater() {
+  const percent = water / 8 * 100;
+  $("waterCount").textContent = water + "/8";
+  $("statWater").textContent = water;
+  $("ring").style.setProperty("--progress", percent + "%");
+  $("waterTitle").textContent = water >= 8 ? "¡Meta completada!" : water === 0 ? "¡Comienza cuando quieras!" : "¡Vas por buen camino!";
+  $("waterHint").textContent = water >= 8 ? "Has completado tu meta de hoy." : "Te " + (water === 7 ? "falta " : "faltan ") + (8-water) + (water === 7 ? " vaso para" : " vasos para") + " completar tu meta.";
+  $("waterNotice").textContent = water + " de 8 vasos registrados.";
+  $("waterNotice").style.display = "block";
+}
+
+function addWater() {
+  if (water < 8) water++;
+  updateWater();
+}
+
+function removeWater() {
+  if (water > 0) water--;
+  updateWater();
+}
+
+function saveReminder() {
+  const time = $("reminderTime").value;
+  const result = $("reminderResult");
+  if (!time) {
+    result.textContent = "Selecciona una hora antes de guardar.";
+  } else {
+    const parts = time.split(":");
+    let hour = Number(parts[0]);
+    const suffix = hour >= 12 ? "p. m." : "a. m.";
+    hour = hour % 12 || 12;
+    const display = hour + ":" + parts[1] + " " + suffix;
+    result.textContent = "✓ Recordatorio guardado para las " + display + ".";
+    try { localStorage.setItem("nutrilifeReminder",time); } catch(e) {}
+  }
+  result.style.display = "block";
+}
+
+function saveActivity() {
+  activities++;
+  $("statActivity").textContent = activities;
+  $("activityResult").textContent = "✓ " + $("activity").value + " registrada correctamente.";
+  $("activityResult").style.display = "block";
+}
+
+function saveMeal() {
+  meals++;
+  $("statMeals").textContent = meals;
+  $("mealResult").textContent = "✓ " + $("meal").value + " registrada. Total de comidas: " + meals + ".";
+  $("mealResult").style.display = "block";
+}
+
+const now = new Date();
+$("today").textContent = now.toLocaleDateString("es-MX", {
+  weekday:"long", day:"numeric", month:"long", year:"numeric"
+});
+try {
+  const saved = localStorage.getItem("nutrilifeReminder");
+  if (saved) $("reminderTime").value = saved;
+} catch(e) {}
+</script>
+</body>
+</html>
